@@ -1,0 +1,13 @@
+
+# Node
+/api/node_modules/
+/api/.env
+/api/npm-debug.log
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Asterisk
+/asterisk/logs/
+/asterisk/modules-cache/
