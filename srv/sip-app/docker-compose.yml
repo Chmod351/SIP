@@ -1,8 +1,33 @@
+version: '3'
+
 services:
   asterisk:
-    build: ./asterick          # o bien: image: asterisk/asterisk:22
+    image: mlan/asterisk
     container_name: sip-asterisk
+    cap_add:
+      - net_admin
+      - net_raw
     ports:
       - "5060:5060/udp"
-      - "10000-20000:10000-20000/udp"
+      - "5060:5060"
+      - "5061:5061"
+      - "10000-10099:10000-10099/udp"
+    environment:
+      - SYSLOG_LEVEL=8
+    volumes:
+      - ./config:/etc/asterisk
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "asterisk -rx 'core show version' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - default
 
+volumes:
+  asterisk-logs:
+
+networks:
+  default:
+    driver: bridge
