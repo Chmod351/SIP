@@ -4,16 +4,7 @@ services:
   asterisk:
     image: mlan/asterisk
     container_name: sip-asterisk
-    cap_add:
-      - net_admin
-      - net_raw
-    ports:
-      - "5060:5060/udp"
-      - "5060:5060"
-      - "5061:5061"
-      - "10000-10099:10000-10099/udp"
-    environment:
-      - SYSLOG_LEVEL=8
+    network_mode: host
     volumes:
       - ./config:/etc/asterisk
     restart: unless-stopped
@@ -22,8 +13,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    networks:
-      - default
+   
 
 volumes:
   asterisk-logs:
